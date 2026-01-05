@@ -46,12 +46,7 @@ This project aims to solve that by providing:
 
 ## 📌 Current Status
 
-**Phase 0 – Initial Setup (In Progress)**
-
-✔ Project repository initialized
-✔ FastAPI app scaffolded
-✔ Environment configuration setup
-✔ Health check endpoint added
+**Phase 0 – Initial Setup (Completed)**
 
 Upcoming phases will progressively add:
 
