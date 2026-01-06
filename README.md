@@ -47,10 +47,10 @@ This project aims to solve that by providing:
 ## 📌 Current Status
 
 **Phase 0 – Initial Setup (Completed)**
+**Phase 1 – Authentication & multi-tenancy (Completed)**
 
 Upcoming phases will progressively add:
 
-- Authentication & multi-tenancy
 - File uploads & document processing
 - Retrieval-Augmented Generation (RAG)
 - AI chat APIs

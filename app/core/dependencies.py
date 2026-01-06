@@ -1,17 +1,15 @@
 from app.core.config import settings
+from app.db.session import SessionLocal
 
 def get_settings():
     return settings
 
 def get_db():
-    """
-    Placeholder for DB session.
-    """
-    db = None
+    db = SessionLocal()
     try:
         yield db
     finally:
-        pass
+        db.close()
 
 
 def get_ai_client():
