@@ -47,7 +47,8 @@ This project aims to solve that by providing:
 ## 📌 Current Status
 
 **Phase 0 – Initial Setup (Completed)**
-**Phase 1 – Authentication & multi-tenancy (Completed)**
+
+**Phase 1 – Authentication & multi-tenancy (In Progress)**
 
 Upcoming phases will progressively add:
 
