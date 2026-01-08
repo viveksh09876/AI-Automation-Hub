@@ -9,6 +9,7 @@ from app.core.version import APP_VERSION
 from app.core.dependencies import get_db
 from app.core.auth import get_current_user
 from app.api.organizations import router as org_router
+from app.api.projects import router as project_router
 
 setup_logging()
 
@@ -21,6 +22,7 @@ app = FastAPI(
 )
 
 app.include_router(org_router)
+app.include_router(project_router)
 
 @app.get("/health")
 def health_check(app_settings=Depends(get_settings)):

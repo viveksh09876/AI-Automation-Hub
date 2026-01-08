@@ -10,11 +10,13 @@ class User(Base):
   organizations = relationship("UserOrganization", back_populates="user", lazy="selectin")
 
 class Organization(Base):
-  __tablename__ = "organizations"
+    __tablename__ = "organizations"
 
-  id = Column(String, primary_key=True)
-  name = Column(String, nullable=False)
-  members = relationship("UserOrganization", back_populates="organization", lazy="selectin")
+    id = Column(String, primary_key=True)
+    name = Column(String, nullable=False)
+
+    members = relationship("UserOrganization", back_populates="organization")
+    projects = relationship("Project", back_populates="organization")
 
 class UserOrganization(Base):
   __tablename__ = "user_organizations"
@@ -25,3 +27,17 @@ class UserOrganization(Base):
   
   user = relationship("User", back_populates="organizations")
   organization = relationship("Organization", back_populates="members")
+
+class Project(Base):
+    __tablename__ = "projects"
+
+    id = Column(String, primary_key=True)
+    organization_id = Column(
+        String,
+        ForeignKey("organizations.id"),
+        nullable=False,
+    )
+    name = Column(String, nullable=False)
+    type = Column(String, nullable=False)  
+
+    organization = relationship("Organization", back_populates="projects")
