@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy import Column, String, ForeignKey, JSON
 from app.db.base import Base
 from sqlalchemy.orm import relationship
 
@@ -41,3 +41,32 @@ class Project(Base):
     type = Column(String, nullable=False)  
 
     organization = relationship("Organization", back_populates="projects")
+    data_sources = relationship("DataSource", back_populates="project")
+
+class DataSource(Base):
+    __tablename__ = "data_sources"
+
+    id = Column(String, primary_key=True)
+    project_id = Column(String, ForeignKey("projects.id"), nullable=False)
+
+    type = Column(String, nullable=False)
+
+    config = Column(JSON, nullable=True)
+
+    project = relationship("Project", back_populates="data_sources")
+
+class WebhookEvent(Base):
+    __tablename__ = "webhook_events"
+
+    id = Column(String, primary_key=True)
+    data_source_id = Column(
+        String,
+        ForeignKey("data_sources.id"),
+        nullable=False,
+    )
+
+    payload = Column(JSON, nullable=False)
+    status = Column(String, default="received")
+    # received | processed | failed
+
+    data_source = relationship("DataSource")

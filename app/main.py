@@ -10,6 +10,8 @@ from app.core.dependencies import get_db
 from app.core.auth import get_current_user
 from app.api.organizations import router as org_router
 from app.api.projects import router as project_router
+from app.api.data_sources import router as data_source_router
+from app.api.webhooks import router as webhook_router
 
 setup_logging()
 
@@ -23,6 +25,8 @@ app = FastAPI(
 
 app.include_router(org_router)
 app.include_router(project_router)
+app.include_router(data_source_router)
+app.include_router(webhook_router)
 
 @app.get("/health")
 def health_check(app_settings=Depends(get_settings)):
