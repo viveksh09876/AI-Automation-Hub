@@ -48,11 +48,12 @@ This project aims to solve that by providing:
 
 **Phase 0 – Initial Setup (Completed)**
 
-**Phase 1 – Authentication & multi-tenancy (In Progress)**
+**Phase 1 – Authentication & multi-tenancy (Completed)**
+
+**Phase 2 – File uploads & document processing (In progress)**
 
 Upcoming phases will progressively add:
 
-- File uploads & document processing
 - Retrieval-Augmented Generation (RAG)
 - AI chat APIs
 - Workflow automation via n8n
