@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, ForeignKey, JSON
+from sqlalchemy import Column, String, ForeignKey, JSON, Integer
 from app.db.base import Base
 from sqlalchemy.orm import relationship
 
@@ -42,6 +42,7 @@ class Project(Base):
 
     organization = relationship("Organization", back_populates="projects")
     data_sources = relationship("DataSource", back_populates="project")
+    files = relationship("File", back_populates="project")
 
 class DataSource(Base):
     __tablename__ = "data_sources"
@@ -70,3 +71,24 @@ class WebhookEvent(Base):
     # received | processed | failed
 
     data_source = relationship("DataSource")
+
+class File(Base):
+    __tablename__ = "files"
+
+    id = Column(String, primary_key=True)
+    project_id = Column(
+        String,
+        ForeignKey("projects.id"),
+        nullable=False,
+    )
+
+    filename = Column(String, nullable=False)
+    mime_type = Column(String, nullable=False)
+    size = Column(Integer)
+
+    status = Column(String, default="uploaded")
+    # uploaded | processing | processed | failed
+
+    storage_path = Column(String, nullable=True)
+
+    project = relationship("Project", back_populates="files")
