@@ -47,8 +47,11 @@ This project aims to solve that by providing:
 ## 📌 Current Status
 
 **Phase 0 – Initial Setup (Completed)**
+
 **Phase 1 – Authentication & multi-tenancy (Completed)**
+
 **Phase 2 – File uploads & document processing (Completed)**
+
 **Phase 3 – Retrieval-Augmented Generation (RAG) (In Progress)**
 
 Upcoming phases will progressively add:
@@ -69,6 +72,7 @@ ai-automation-hub/
 │   ├── core/            # Config, settings (planned)
 │   ├── api/             # API routes (planned)
 │   └── services/        # AI & business logic (planned)
+│   └── rag/             # RAG (planned)
 │
 ├── .env.example         # Environment variables template
 ├── requirements.txt
