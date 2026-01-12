@@ -1,6 +1,7 @@
 from sqlalchemy import Column, String, ForeignKey, JSON, Integer, Text
 from app.db.base import Base
 from sqlalchemy.orm import relationship
+from sqlalchemy.dialects.postgresql import VECTOR
 
 class User(Base):
   __tablename__ = "users"
@@ -97,13 +98,11 @@ class FileChunk(Base):
     __tablename__ = "file_chunks"
 
     id = Column(String, primary_key=True)
-    file_id = Column(
-        String,
-        ForeignKey("files.id"),
-        nullable=False,
-    )
+    file_id = Column(String, ForeignKey("files.id"), nullable=False)
 
     chunk_index = Column(Integer, nullable=False)
     content = Column(Text, nullable=False)
+
+    embedding = Column(VECTOR(1536))  # OpenAI embedding size
 
     file = relationship("File")
