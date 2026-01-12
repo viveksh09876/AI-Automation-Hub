@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, ForeignKey, JSON, Integer
+from sqlalchemy import Column, String, ForeignKey, JSON, Integer, Text
 from app.db.base import Base
 from sqlalchemy.orm import relationship
 
@@ -92,3 +92,18 @@ class File(Base):
     storage_path = Column(String, nullable=True)
 
     project = relationship("Project", back_populates="files")
+
+class FileChunk(Base):
+    __tablename__ = "file_chunks"
+
+    id = Column(String, primary_key=True)
+    file_id = Column(
+        String,
+        ForeignKey("files.id"),
+        nullable=False,
+    )
+
+    chunk_index = Column(Integer, nullable=False)
+    content = Column(Text, nullable=False)
+
+    file = relationship("File")
