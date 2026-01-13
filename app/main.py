@@ -13,6 +13,7 @@ from app.api.projects import router as project_router
 from app.api.data_sources import router as data_source_router
 from app.api.webhooks import router as webhook_router
 from app.api.files import router as file_router
+from app.api.qa import router as qa_router
 
 setup_logging()
 
@@ -29,6 +30,7 @@ app.include_router(project_router)
 app.include_router(data_source_router)
 app.include_router(webhook_router)
 app.include_router(file_router)
+app.include_router(qa_router)
 
 @app.get("/health")
 def health_check(app_settings=Depends(get_settings)):
