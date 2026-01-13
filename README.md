@@ -52,13 +52,14 @@ This project aims to solve that by providing:
 
 **Phase 2 – File uploads & document processing (Completed)**
 
-**Phase 3 – Retrieval-Augmented Generation (RAG) (In Progress)**
+**Phase 3 – Retrieval-Augmented Generation (RAG) (Completed)**
+
+**Phase 4 – AI chat APIs (In Progress)**
 
 Upcoming phases will progressively add:
 
-- AI chat APIs
 - Workflow automation via n8n
-- Production deployment & documentation
+- UI
 
 ---
 
