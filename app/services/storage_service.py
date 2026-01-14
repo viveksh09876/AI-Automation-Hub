@@ -1,5 +1,7 @@
 from supabase import create_client
 from app.core.config import settings
+import tempfile
+from pathlib import Path
 
 supabase = create_client(
     settings.SUPABASE_URL,
@@ -39,3 +41,15 @@ def delete_file_from_storage(bucket: str, path: str):
 
     if response.get("error"):
         raise RuntimeError(response["error"]["message"])
+    
+def download_file_to_temp(bucket: str, path: str) -> Path:
+    response = supabase.storage.from_(bucket).download(path)
+
+    if response.get("error"):
+        raise RuntimeError(response["error"]["message"])
+
+    tmp = tempfile.NamedTemporaryFile(delete=False)
+    tmp.write(response)
+    tmp.close()
+
+    return Path(tmp.name)

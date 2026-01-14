@@ -5,6 +5,9 @@ from app.core.dependencies import get_db
 from app.db.models import Project, File
 from app.services.file_service import create_file_record, store_file
 from app.services.storage_service import get_signed_download_url, delete_file_from_storage
+from fastapi import BackgroundTasks
+from app.services.file_processing_background import process_file_background
+from app.services.storage_service import download_file_to_temp
 
 router = APIRouter(prefix="/files", tags=["Files"])
 
@@ -12,6 +15,7 @@ router = APIRouter(prefix="/files", tags=["Files"])
 @router.post("/{project_id}")
 def upload_file(
     project_id: str,
+    background_tasks: BackgroundTasks,
     uploaded_file: UploadFile = UploadFileType(...),
     context=Depends(get_current_org),
     db: Session = Depends(get_db),
@@ -44,13 +48,22 @@ def upload_file(
         uploaded_file=uploaded_file,
     )
 
+    local_path = download_file_to_temp(
+        bucket="project-files",
+        path=file_record.storage_path,
+    )
+
+    background_tasks.add_task(
+        process_file_background,
+        file_record.id,
+        local_path,
+    )
+
     return {
         "id": file_record.id,
-        "filename": file_record.filename,
-        "status": file_record.status,
-        "storage_path": file_record.storage_path,
+        "status": "uploaded",
+        "processing": "started",
     }
-
 
 @router.get("/{project_id}")
 def list_files(
