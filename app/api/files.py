@@ -6,7 +6,8 @@ from app.db.models import Project, File
 from app.services.file_service import create_file_record, store_file
 from app.services.storage_service import get_signed_download_url, delete_file_from_storage
 from fastapi import BackgroundTasks
-from app.services.file_processing_background import process_file_background
+from app.core.queue import default_queue
+from app.workers.file_tasks import process_file_task
 from app.services.storage_service import download_file_to_temp
 
 router = APIRouter(prefix="/files", tags=["Files"])
@@ -53,8 +54,8 @@ def upload_file(
         path=file_record.storage_path,
     )
 
-    background_tasks.add_task(
-        process_file_background,
+    default_queue.enqueue(
+        process_file_task,
         file_record.id,
         local_path,
     )

@@ -15,6 +15,9 @@ class Settings(BaseSettings):
 
     N8N_WEBHOOK_BASE_URL: Optional[str] | None = None
 
+    REDIS_HOST: str = "localhost"
+    REDIS_PORT: int = 6379
+
     class Config:
         env_file = ".env"
         env_file_encoding = "utf-8"
