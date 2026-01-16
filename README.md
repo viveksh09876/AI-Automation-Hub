@@ -1,116 +1,204 @@
-# AI Automation Hub (Backend)
+# AI Automation Hub 🚀
 
-🚀 **AI Automation Hub** is a Python-based backend platform designed to build **AI-powered automations** for small businesses and startups.
+**Multi-tenant AI Automation Platform with RAG, Background Workers & n8n**
 
-The goal of this project is to create a **reusable backend engine** that can power:
+AI Automation Hub is a **production-grade backend + minimal admin frontend** for building **AI-powered automation workflows**.
+It combines **RAG (Retrieval-Augmented Generation)**, **project-scoped knowledge bases**, and **workflow orchestration (n8n)** into a clean, scalable architecture.
 
-- 📧 AI email summarization & routing
-- 🧠 Document-based Q&A chatbots (RAG)
-- 📊 Lead qualification & enrichment
-- 🔄 Workflow automation via n8n
-- 🗄️ Secure, multi-tenant data storage
-
-This repository focuses on **backend-first architecture**, making it easy to integrate with:
-
-- Frontend apps
-- No-code tools (n8n)
-- CRMs, email systems, and internal tools
+This repository contains **both backend and frontend** in a single mono-repo for easier development and deployment.
 
 ---
 
-## 🎯 Project Vision
+## 🧠 What This Platform Does
 
-Small businesses often need **custom AI workflows**, but off-the-shelf tools don’t fit their exact needs.
-
-This project aims to solve that by providing:
-
-- A **FastAPI-based AI backend**
-- Modular, project-based AI automations
-- Secure user & organization management
-- Seamless integration with automation tools like **n8n**
-- A foundation that can be customized per client use-case
+- Multi-tenant AI automation (Organizations → Projects)
+- Upload documents and build **project-specific knowledge bases**
+- Ask AI questions grounded strictly in uploaded files (RAG)
+- Trigger AI workflows via **webhooks, email, or n8n**
+- Run heavy AI tasks asynchronously using **Redis workers**
+- Provide a **minimal admin UI** for configuration (no Postman required)
 
 ---
 
-## 🧱 Tech Stack
-
-- **Backend:** Python, FastAPI
-- **Database:** PostgreSQL (via Supabase)
-- **Auth:** JWT / Supabase Auth (planned)
-- **AI / LLMs:** OpenAI-compatible APIs (planned)
-- **Vector Search:** pgvector (planned)
-- **Automation:** n8n (webhooks & workflows)
-- **Deployment:** Cloud-ready (Render / Railway / Fly.io)
-
----
-
-## 📌 Current Status
-
-**Phase 0 – Initial Setup (Completed)**
-
-**Phase 1 – Authentication & multi-tenancy (Completed)**
-
-**Phase 2 – File uploads & document processing (Completed)**
-
-**Phase 3 – Retrieval-Augmented Generation (RAG) (Completed)**
-
-**Phase 4 – AI chat APIs (In Progress)**
-
-Upcoming phases will progressively add:
-
-- Workflow automation via n8n
-- UI
-
----
-
-## 📂 Project Structure (Initial)
+## 🏗️ Repository Structure
 
 ```
 ai-automation-hub/
+├── backend/                 # Python FastAPI backend
+│   ├── app/
+│   │   ├── api/             # REST endpoints
+│   │   ├── core/            # config, auth, redis, queue
+│   │   ├── db/              # models, session
+│   │   ├── rag/             # chunking, prompts
+│   │   ├── services/        # RAG, storage, embeddings
+│   │   └── workers/         # Redis background tasks
+│   └── requirements.txt
 │
-├── app/
-│   ├── main.py          # FastAPI entry point
-│   ├── core/            # Config, settings (planned)
-│   ├── api/             # API routes (planned)
-│   └── services/        # AI & business logic (planned)
-│   └── rag/             # RAG (planned)
+├── ai-automation-hub-ui/     # Next.js minimal admin frontend
+│   ├── app/
+│   │   ├── login/
+│   │   ├── orgs/
+│   │   ├── projects/
+│   │   └── layout.tsx
+│   └── lib/
+│       ├── api.ts
+│       ├── auth.ts
+│       └── supabase.ts
 │
-├── .env.example         # Environment variables template
-├── requirements.txt
-└── README.md
+└── README.md                # You are here
 ```
 
 ---
 
-## 🩺 Health Check
-
-Once the app is running locally, you can verify it using:
+## 🔑 Core Architecture
 
 ```
-GET /health
+Frontend (Next.js)
+   ↓
+FastAPI Backend
+   ↓
+Supabase (Auth + Storage + Postgres + pgvector)
+   ↓
+Redis Queue → Background Workers
+   ↓
+OpenAI (Embeddings + LLM)
+   ↓
+n8n (Automation Execution)
 ```
 
-Expected response:
+**Key principle:**
 
-```json
-{
-  "status": "ok"
-}
+- Backend = intelligence & security
+- n8n = execution
+- Frontend = configuration only
+
+---
+
+## ⚙️ Backend (Python / FastAPI)
+
+### Features
+
+- Supabase Auth (JWT + JWKS)
+- Organizations & Projects (multi-tenancy)
+- Data Sources (webhook, email, file)
+- File uploads with Supabase Storage
+- RAG pipeline:
+
+  - Text extraction
+  - Chunking
+  - Embeddings (pgvector)
+  - Semantic search
+  - Grounded answers
+
+- Redis + RQ background workers
+- Webhook contracts for n8n
+
+### Tech Stack
+
+- FastAPI
+- SQLAlchemy
+- Supabase (Postgres + Storage)
+- pgvector
+- OpenAI
+- Redis + RQ
+
+### Run Backend
+
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
 ---
 
-## 🔮 Roadmap (High Level)
+## 🖥️ Frontend (Next.js – Minimal Admin UI)
 
-- **Phase 1:** Authentication & organization management
-- **Phase 2:** Projects & data sources
-- **Phase 3:** File uploads & storage
-- **Phase 4:** RAG (embeddings + semantic search)
-- **Phase 5:** AI chat endpoints
-- **Phase 6:** n8n automation workflows
-- **Phase 7:** Client-ready AI use-cases
-- **Phase 8:** Deployment, testing & documentation
+### Purpose
+
+The frontend is intentionally **minimal** and acts as a **control panel**, not a full product UI.
+
+### Features
+
+- Supabase login
+- Organization selection
+- Project creation
+- Data source creation (copy webhook IDs)
+- File upload & processing status
+- RAG testing UI (ask questions)
+- No Postman required
+
+### Tech Stack
+
+- Next.js (App Router)
+- TypeScript
+- Supabase Auth
+- Fetch-based API client
+
+### Run Frontend
+
+```bash
+cd ai-automation-hub-ui
+npm install
+npm run dev
+```
 
 ---
 
-> ⚠️ This project is under active development. APIs and structure may evolve as features are added.
+## 🔌 n8n Integration (One-Time Setup)
+
+- A **single n8n instance** is reused for all projects
+- Each project has unique `data_source_id`
+- n8n workflows call:
+
+  ```
+  POST /webhooks/{data_source_id}
+  ```
+
+- Backend resolves org/project automatically
+
+No per-project n8n setup required beyond pasting the webhook URL once.
+
+---
+
+## 📌 Typical Use Cases
+
+- AI-powered email triage
+- Knowledge-based customer support bots
+- Lead qualification & routing
+- Internal document Q&A
+- Workflow-driven AI automation for clients
+
+---
+
+## 🚀 Status
+
+✅ Backend complete
+✅ Frontend complete (admin scope)
+✅ RAG implemented
+✅ Background workers enabled
+⏳ n8n workflows (next step / client-specific)
+
+---
+
+## 🎯 Philosophy
+
+This project is built to be:
+
+- **Client-ready**
+- **Freelancer-friendly**
+- **Scalable without overengineering**
+- **Easy to demo**
+- **Easy to extend**
+
+---
+
+## 📄 License
+
+MIT (or your preferred license)
+
+---
+
+Built as a **production-grade AI automation platform** with a focus on real-world usage, not demos.
